@@ -14,19 +14,27 @@ $(document).on("click", "a", function (event) {
     var html_target = $(this).attr("href");
     var elemento = $(this);
     $("a").removeClass("text-warning");
-
     try {
         $.get(html_target, function (data) {
-            $(_NAVIGATION_TARGET).html(data);
+
         }).done(function (data) {
+            //Carrega body
             $(_NAVIGATION_TARGET).addClass("carregado");
+            $(_NAVIGATION_TARGET).html(data);
+
+            //Troca Menu
             elemento.addClass("text-warning");
             $("[data-atual]").attr("data-atual", html_target);
+
         }).fail(function (data) {
+            //Erro
             var erro = HTML_ERRO.replace("%MOTIVO_ERRO%", data.responseText);
-            $(html_target).html(erro);
+            $(_NAVIGATION_TARGET).html(erro);
             elemento.removeClass("text-warning");
             $(_NAVIGATION_TARGET).removeClass("carregado");
+        }).always(function () {
+            //Reexibe o conteudo
+           
         });
     } catch (e) {
         var erro = HTML_ERRO.replace("%MOTIVO_ERRO%", e.message);
